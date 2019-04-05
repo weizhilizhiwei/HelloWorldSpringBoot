@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>jQuery弹窗</title>
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .main {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            position: fixed;
+            z-index: 1;
+        }
+
+        .main_box {
+            width: 80%;
+            height: 80%;
+            margin: 2% auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            display: none;
+        }
+
+        .close {
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+    <script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"/>
+    <script>
+        $(function () {
+            $("#open").click(function () {
+                $(".main").fadeIn();
+                $(".main_box").delay(500).slideDown();
+                $("#htmlContent").html("加载中……");
+                $.ajax({
+                    type: 'post',
+                    data: "",
+                    url: '/getPrivacyState',
+                    cache: false,
+                    dataType: 'text',
+                    success: function (data) {
+                        $("#htmlContent").html(data);
+                    }
+                })
+            });
+            $("#close").click(function () {
+                $(".main").fadeOut();
+            });
+
+            $("#save-btn").on("click", function () {
+                $.ajax({
+                    type: 'post',
+                    data: $('#form').serialize(),
+                    url: '/postPrivacyState',
+                    cache: false,
+                    dataType: 'text',
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="main">
+    <div class="main_box">
+        <div id="close" class="close">点击关闭</div>
+        <div id="htmlContent"></div>
+        <div id="formDiv">
+            <form id="form">
+                <input type="text" id="id" name="id" value="100"/>
+                <input type="text" id="content" name="content" value="隐私申明"/>
+            </form>
+            <input id="save-btn" type="button" value="保存"/>
+        </div>
+
+    </div>
+</div>
+
+<input id="open" type="button" value="点击淡入弹窗"/>
+</body>
+</html>

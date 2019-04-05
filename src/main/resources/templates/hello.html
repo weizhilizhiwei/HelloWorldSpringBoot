@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="/js/jquery.min.js"/>
+</head>
+<body>
+<form id="form">
+    <input type="text" id="id" name="id" value="100"/>
+    <input type="text" id="content" name="content" value="隐私申明"/>
+</form>
+<input id="save-btn" type="button" value="保存"/>
+<script>
+    $(document).ready(function() {
+        //表单异步提交
+
+        $("#save-btn").on("click", function () {
+            $.ajax({
+                type: 'post',
+                data: $('#form').serialize(),
+                url: 'http://14.127.178.34:8080/hello',
+                cache: false,
+                dataType: 'text',
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>
